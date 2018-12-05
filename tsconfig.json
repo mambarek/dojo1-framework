@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "module": "amd",
+    "noImplicitAny": true,
+    //"outDir": "_build",
+    "removeComments": false,
+    "sourceMap": true,
+    "target": "ES5",
+    "experimentalDecorators": true
+  },
+  "include": [
+    "./scripts/**/*.ts",
+    "./scripts/**/*.html"
+  ],
+  "files": [
+    "node_modules/dojo-typings/dojo/1.11/modules.d.ts",
+    "node_modules/dojo-typings/dijit/1.11/modules.d.ts"
+    //"../../dojo/1.11/modules.d.ts",
+    //"../../dijit/1.11/modules.d.ts"
+  ]
+}

@@ -1,0 +1,11 @@
+//*** Übersetzung Translation i18n Internationalization
+Die übersetzung in den HTML templates wird mit $(key) deklariert
+zB $(view.*) wobei * ist dann der rest des Pfades ${view.editor.tabs.tab1}
+
+Das ganz wird in der folgenden Klasse realisiert (beim parsen der Template)
+
+com.daimler.dijit._Templated.js
+
+Zeile 63
+
+_stringRepl: function(/**String*/ tmpl)

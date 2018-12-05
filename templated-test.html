@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Dojo 1 Typings – store Example</title>
+	<link rel="stylesheet" href="style.css" media="screen">
+	<link rel="stylesheet" href="node_modules/dijit/themes/claro/claro.css"/>
+	<script>
+        var dojoConfig = {
+            async: true,
+            baseUrl: './',
+			parseOnLoad: false,
+            isDebug: true,
+            packages: [
+                {name: 'dojo', location: 'node_modules/dojo' },
+                {name: 'dijit', location: 'node_modules/dijit' },
+                {name: 'dojox', location: 'node_modules/dojox' },
+				{name: 'com', location: "scripts/com"},
+                {name: 'tests', location: "scripts/tests"},
+                {name: 'test', location: "scripts/test"}],
+            selectorEngine: 'lite',
+            tlmSiblingOfDojo: true
+        };
+	</script>
+
+</head>
+
+<body class="claro">
+<div id="cc"></div>
+<div id="yy"></div>
+<script src="node_modules/dojo/dojo.js"></script>
+<script>
+    require(["dojo/parser", "dijit/registry", "dojo/dom-construct","tests/com/it2go/test/SecondTemplatedWidget", "com/it2go/dojo-framework/dijit/input/InputWidget"],
+		function(parser, registry,domConstruct, SecondTemplatedWidget, InputWidget){
+        //parser.parse();
+        //var widget = registry.byId("v1");
+        //widget.buildTree();
+        var templated = new SecondTemplatedWidget();
+		//emplated.templateString = "<p>Hello world!</p>";
+        templated.startup();
+        templated.placeAt("cc");
+
+
+        templated.buildTree();
+
+
+    });
+</script>
+</body>
+</html>

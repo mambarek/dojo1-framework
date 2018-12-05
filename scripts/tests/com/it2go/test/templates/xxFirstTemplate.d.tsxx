@@ -1,0 +1,6 @@
+/*
+declare module 'dojo/text!./FirstTemplate.html' {
+    const FirstTemplate: string;
+    export = FirstTemplate;
+}
+*/

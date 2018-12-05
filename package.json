@@ -1,0 +1,19 @@
+{
+  "name": "dojo-framework",
+  "version": "1.0.0",
+  "description": "The Dojo framework util",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Ali Mbarek",
+  "license": "ISC",
+  "devDependencies": {
+    "dojo-typings": "^1.11.9"
+  },
+  "dependencies": {
+    "dojo": "1.14.2",
+    "dijit": "1.14.2",
+    "dojox": "1.14.2"
+  }
+}

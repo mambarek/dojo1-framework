@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Dojo 1 Typings – store Example</title>
+	<link rel="stylesheet" href="style.css" media="screen">
+	<link rel="stylesheet" href="node_modules/dijit/themes/claro/claro.css"/>
+	<script>
+        var dojoConfig = {
+            async: true,
+            baseUrl: './',
+			parseOnLoad: false,
+            isDebug: true,
+            packages: [
+                {name: 'dojo', location: 'node_modules/dojo' },
+                {name: 'dijit', location: 'node_modules/dijit' },
+                {name: 'dojox', location: 'node_modules/dojox' },
+				{name: 'com', location: "scripts/com"},
+                {name: 'test', location: "scripts/test"}],
+            selectorEngine: 'lite',
+            tlmSiblingOfDojo: true
+        };
+	</script>
+
+</head>
+
+<body class="claro">
+<div id="v1" data-dojo-type="com/it2go/dojo-framework/dijit/DataViewWidget">Test the Widgets V1!
+	<!--<div> hier ist ein Abstand zwischen den nodes denn noch der child v1-1 wird gefunden-->
+		<div id="v1-1" data-dojo-type="com/it2go/dojo-framework/dijit/DataViewWidget">Test the Widgets V1-1!
+			<div id="v1-1-1" data-dojo-type="com/it2go/dojo-framework/dijit/DataViewWidget">Test the Widgets V1-1-1!</div>
+		</div>
+	<!--</div>-->
+	<div id="v1-2" data-dojo-type="com/it2go/dojo-framework/dijit/DataViewWidget">Test the Widgets V1-2!
+		<div id="t1" data-dojo-type="com/it2go/dojo-framework/dijit/input/InputWidget"></div>
+	</div>
+</div>
+<script src="node_modules/dojo/dojo.js"></script>
+<script>
+    require(["dojo/parser", "dijit/registry","com/it2go/dojo-framework/dijit/DataViewWidget", "com/it2go/dojo-framework/dijit/input/InputWidget","dojo/domReady!"], function(parser, registry, DataViewWidget, InputWidget){
+        parser.parse();
+        var widget = registry.byId("v1");
+        widget.buildTree();
+    });
+</script>
+</body>
+</html>
