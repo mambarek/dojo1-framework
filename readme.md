@@ -1,3 +1,13 @@
+# Aufsetzen
+### npm dojo-typings
+https://github.com/dojo/typings/wiki/How-To-Use
+
+npm install dojo-typings --save-dev
+### npm dojo
+https://www.npmjs.com/package/dojo
+
+npm i dojo
+
 #Internationalzation:
 Der Ansatz von dojo mit i18n ist sehr statisch
 man muss seine eigene Componente bauen die flexible resourcen ansprechen kann

@@ -2,19 +2,25 @@ import dojoDeclare = require("dojo/_base/declare");
 
 import _WidgetsInTemplateMixin = require("dijit/_WidgetsInTemplateMixin");
 import DataViewWidget = require("./DataViewWidget");
-import _TemplatedDataViewWidget = require("./_TemplatedDataViewWidget");
-import declareDecorator from "../declareDecorator";
-import _TemplatedMixin = require("./_TemplatedMixin");
+
 import dojoTemplatedMixin = require("dijit/_TemplatedMixin");
 
 
 
 //@declareDecorator(_TemplatedDataViewWidget)
 //class TemplatedDataViewWidget extends _TemplatedDataViewWidget{
+interface TemplatedDataViewWidget extends DataViewWidget{}
 
 class TemplatedDataViewWidget {
-    //inherited: (args: Object) => void;
+
     widgetsInTemplate:boolean = true;
+
+    startup(){
+        //@ts-ignore
+        this.inherited(this.startup,arguments);
+        //super.startup();
+        this.buildTree();
+    }
 
 
 /*    buildRendering(): void {
@@ -23,17 +29,16 @@ class TemplatedDataViewWidget {
         // @ts-ignore
         //super.buildRendering();
     }
-
-    buildTree() {
-        // @ts-ignore
-        this.inherited(this.buildTree,arguments);
-        // @ts-ignore
-        //super.buildTree();
-
+*/
+/*    buildTree() {
+        let containerNode = this.containerNode;
+        let id = containerNode.id;
+        let length1 = this.children.length;
     }*/
 }
 
 //var exp = _declare("alloy.editors.StringListTs", [DataViewWidget, _TemplatedMixin, _WidgetsInTemplateMixin], new TemplatedDataViewWidget());
+//var exp = dojoDeclare( [DataViewWidget, dojoTemplatedMixin, _WidgetsInTemplateMixin], new TemplatedDataViewWidget());
 var exp = dojoDeclare( [DataViewWidget, dojoTemplatedMixin, _WidgetsInTemplateMixin], new TemplatedDataViewWidget());
 export = exp
 //export = TemplatedDataViewWidget

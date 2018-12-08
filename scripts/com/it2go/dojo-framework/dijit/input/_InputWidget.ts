@@ -18,4 +18,6 @@ class _InputWidget{
 
 }
 
+//let exp = dojoDeclare([DataViewWidget], new _InputWidget());
+//export = exp;
 export = _InputWidget

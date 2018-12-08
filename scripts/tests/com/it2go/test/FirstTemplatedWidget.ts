@@ -7,7 +7,6 @@ import DataViewWidget = require("../../../../com/it2go/dojo-framework/dijit/Data
 
 import _WidgetsInTemplateMixin = require("dijit/_WidgetsInTemplateMixin");
 
-import _TemplatedDataViewWidget = require("../../../../com/it2go/dojo-framework/dijit/_TemplatedDataViewWidget");
 import _TemplatedMixin = require("../../../../com/it2go/dojo-framework/dijit/_TemplatedMixin");
 
 

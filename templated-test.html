@@ -25,22 +25,36 @@
 </head>
 
 <body class="claro">
-<div id="cc"></div>
-<div id="yy"></div>
+<div id="cc"><h2>Waiting for template ...</h2></div>
+<div id="yy"><h2>Danach kommt das</h2></div>
 <script src="node_modules/dojo/dojo.js"></script>
 <script>
-    require(["dojo/parser", "dijit/registry", "dojo/dom-construct","tests/com/it2go/test/SecondTemplatedWidget", "com/it2go/dojo-framework/dijit/input/InputWidget"],
-		function(parser, registry,domConstruct, SecondTemplatedWidget, InputWidget){
-        //parser.parse();
-        //var widget = registry.byId("v1");
-        //widget.buildTree();
+    require(["dojo/parser",
+			"dijit/registry",
+			"dojo/dom-construct",
+			"tests/com/it2go/test/SecondTemplatedWidget",
+			"com/it2go/dojo-framework/dijit/input/InputWidget",
+			"com/it2go/dojo-framework/dojo/application/SessionController", "dojo/domReady!"],
+		function(parser, registry, domConstruct, SecondTemplatedWidget, InputWidget, SessionController){
+
+        var sessionController = SessionController.getInstance();
+        var testModel = {
+            //attrName: "greet",
+            entity:{
+        		greet: "Hello from entity!!!",
+				birthDate: new Date()
+			}
+        };
+        sessionController.pushObject("greetingModel",testModel);
         var templated = new SecondTemplatedWidget();
 		//emplated.templateString = "<p>Hello world!</p>";
         templated.startup();
-        templated.placeAt("cc");
+
+        //document.getElementById("cc").innerHTML = templated.containerNode.innerHTML;
+        templated.placeAt("cc","replace");
 
 
-        templated.buildTree();
+        //templated.buildTree();
 
 
     });

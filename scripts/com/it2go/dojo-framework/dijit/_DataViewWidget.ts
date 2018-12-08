@@ -7,6 +7,8 @@ import * as on from "dojo/on";
 import * as lang from "dojo/_base/lang";
 import * as ready from "dojo/ready";
 import * as parser from "dojo/parser";
+import dojoDeclare = require("dojo/_base/declare");
+import DataViewWidget = require("./DataViewWidget");
 /*
 
 import registry = require("dijit/registry");
@@ -26,10 +28,6 @@ interface _DataViewWidget extends _WidgetBase {
 
 }
 
-// experiment for hash it works with indexedtype
-interface MyMap{[key:string]:any}
-
-
 
 /**
  * By using a decorator to create constructors with `dojo/_base/declare`, we can
@@ -37,15 +35,17 @@ interface MyMap{[key:string]:any}
  * required to use merged declarations to define our interface, so the widget
  * class has to be declared as the default export in a separate statement.
  */
-@declare(_WidgetBase)
+//@declare(_WidgetBase)
 class _DataViewWidget {
 
-    //xx: MyMap = new DataModelWrapper({},{});
+    isDataViewWidget:boolean = true;
     // the model to work on
     dataModelWrapper: DataModelWrapper;
 
     // the attribute from model to represent in this view
     attrName: string;
+    value: string;
+    root:boolean;
 
     // a GUI attribute may not belong to model
     // so ignore them when initializing or reading
@@ -113,7 +113,7 @@ class _DataViewWidget {
             this.hide();
     }
 
-    getChildWidgets(node: Node){
+    getChildWidgets(node: Node):any[]{
         let chilList:any = {};
         if(node && node.childNodes)
         {
@@ -121,9 +121,9 @@ class _DataViewWidget {
             {
                 let childNode = node.childNodes[i];
                 //var widget = dijit.getEnclosingWidget(childNode);
-                let widget = registry.byId((childNode as Element).id);
+                let widget:any = registry.byId((childNode as Element).id);
 
-                if(widget && widget instanceof _DataViewWidget) {
+                if(widget && widget.isDataViewWidget) {
                     let w = <_DataViewWidget>widget;
                     chilList[w.id] = widget;
                 } else {
@@ -144,7 +144,7 @@ class _DataViewWidget {
 
         // reset the tree
         this.children = new Array<_DataViewWidget>();
-        let chList = this.getChildren();
+        let chList:any[] = this.getChildren();
 
         // when no direct children exists so search in the
         // DOM descendants
@@ -154,7 +154,8 @@ class _DataViewWidget {
         for (let childName in chList){
 
             let child = chList[childName];
-            if(child instanceof _DataViewWidget){
+            //if(child instanceof _DataViewWidget){
+            if(child.isDataViewWidget){
                 let w = <_DataViewWidget>child;
                 w.parentViewWiget = this;
 
@@ -169,9 +170,8 @@ class _DataViewWidget {
             }
         }
 
-        console.log("for widget id: " + this.id +" children length: " + this.children.length);
+        console.log("_DataViewWidget::buildTree for widget id: " + this.id +" children length: " + this.children.length);
     }
-
     setDataModelWrapper(aDataModelWrapper: DataModelWrapper){
         this.dataModelWrapper = aDataModelWrapper;
 
@@ -198,5 +198,6 @@ class _DataViewWidget {
  * consumes this module, that instead of this being the return value of the module,
  * it will be located under Dialog.default.
  */
-//export default _DataViewWidget;
-export = _DataViewWidget;
+let exp = dojoDeclare([_WidgetBase], new _DataViewWidget());
+export = exp;
+//export = _DataViewWidget;

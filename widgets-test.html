@@ -31,12 +31,14 @@
 		</div>
 	<!--</div>-->
 	<div id="v1-2" data-dojo-type="com/it2go/dojo-framework/dijit/DataViewWidget">Test the Widgets V1-2!
-		<div id="t1" data-dojo-type="com/it2go/dojo-framework/dijit/input/InputWidget"></div>
+		<!--<div id="t1" data-dojo-type="com/it2go/dojo-framework/dijit/input/InputWidget" data-dojo-props='"widgetType":"text"'></div>-->
 	</div>
 </div>
 <script src="node_modules/dojo/dojo.js"></script>
 <script>
-    require(["dojo/parser", "dijit/registry","com/it2go/dojo-framework/dijit/DataViewWidget", "com/it2go/dojo-framework/dijit/input/InputWidget","dojo/domReady!"], function(parser, registry, DataViewWidget, InputWidget){
+    require(["dojo/parser", "dijit/registry","com/it2go/dojo-framework/dijit/DataViewWidget",
+        "com/it2go/dojo-framework/dijit/input/WidgetTypes", "com/it2go/dojo-framework/dijit/input/InputWidget"
+        ,"dojo/domReady!"], function(parser, registry, DataViewWidget, WidgetTypes, InputWidget){
         parser.parse();
         var widget = registry.byId("v1");
         widget.buildTree();
