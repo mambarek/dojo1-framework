@@ -30,6 +30,7 @@
 <script src="node_modules/dojo/dojo.js"></script>
 <script>
 	var toValidate;
+	var model;
     require(["dojo/parser",
 			"dijit/registry",
 			"dojo/dom-construct",
@@ -60,6 +61,9 @@
 			}
         };
 
+		// for tests only
+        model = testModel;
+
         sessionController.pushObject("greetingModel",testModel);
         //    sessionController.pushObject("myConverter",new MyConverter());
         var templated = new SecondTemplatedWidget();
@@ -75,6 +79,8 @@
 
     function validate() {
         toValidate.validate();
+        console.log("## Validate called model is", model);
+
     }
 
 </script>

@@ -5,7 +5,7 @@ import RegisterConverter from "../../../../../com/it2go/dojo-framework/dijit/inp
 @RegisterConverter("myConverter")
 class MyConverter implements Converter<String>{
     getAsObject(value: string, widget: InputWidget): String {
-        return value;
+        return value + "#CONVERTED#";
     }
 
     getAsString(value: String, widget: InputWidget): string {

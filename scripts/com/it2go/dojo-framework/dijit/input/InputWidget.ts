@@ -17,6 +17,8 @@ import Application = require("../../dojo/application/Application");
 import {HtmlData} from "../../dojo/HtmlData";
 import {Validator} from "./validation/Validator";
 import {ValidatorRegistry} from "./validation/ValidatorRegistry";
+import on = require("dojo/on");
+import lang = require("dojo/_base/lang");
 
 
 //interface InputWidget extends DataViewWidget{}
@@ -56,6 +58,8 @@ class InputWidget extends DataViewWidget{
         this.targetWidget.set('value',value);
         this.targetWidget.placeAt(this.domNode);
         this.getChildren().push(this.targetWidget);
+
+        this.attachEvents();
     }
 
     initAttributes(){
@@ -85,6 +89,25 @@ class InputWidget extends DataViewWidget{
         }
     }
 
+    attachEvents(){
+        this.own(
+            on(this.targetWidget,"blur", lang.hitch(this,"handleOnBlur"))
+        );
+    }
+
+    handleOnBlur(){
+        console.log("++ InputWidget::handleOnBlur call <<");
+        // validate
+        this.validate();
+        if(this.isValid()){
+            let val = this.targetWidget.value;
+            if(this.converter)
+                val = this.converter.getAsObject(val, this);
+
+            this.setAttributeValue(val);
+        }
+    }
+
     postCreate(): void {
         //this.targetWidget = new DateTextBox();
         super.postCreate();
@@ -109,6 +132,13 @@ class InputWidget extends DataViewWidget{
         //this.targetWidget.startup();
         //this.targetWidget.placeAt(this.domNode);
         console.log("++ InputWidget::startup call! id: " + this.id + " this.valuePath: ", this.valuePath);
+    }
+
+    setAttributeValue(val: any){
+
+        if(!this.dataModelWrapper || !this.dataModelWrapper.entity) return;
+
+        this.dataModelWrapper.entity[this.attrName] = val;
     }
 
     getAttributeValue():any{
@@ -139,6 +169,12 @@ class InputWidget extends DataViewWidget{
 
     validate(){
         this.valid = true;
+
+        // dirty cast but it works
+        let o:any = this.targetWidget;
+        if(o.isValid)
+            this.valid = o.isValid();
+
         this.validators.forEach(validator => validator.validate(this.targetWidget.value, this));
     }
 }
