@@ -29,6 +29,7 @@
 <div id="yy"><h2>Danach kommt das</h2></div>
 <script src="node_modules/dojo/dojo.js"></script>
 <script>
+	var toValidate;
     require(["dojo/parser",
 			"dijit/registry",
 			"dojo/dom-construct",
@@ -68,11 +69,14 @@
         //document.getElementById("cc").innerHTML = templated.containerNode.innerHTML;
         templated.placeAt("cc","replace");
 
-        templated.validate();
-
-
+        toValidate = templated;
 
     });
+
+    function validate() {
+        toValidate.validate();
+    }
+
 </script>
 </body>
 </html>
