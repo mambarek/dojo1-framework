@@ -32,12 +32,19 @@
     require(["dojo/parser",
 			"dijit/registry",
 			"dojo/dom-construct",
+			"com/it2go/dojo-framework/dojo/application/Application",
+            "com/it2go/dojo-framework/dojo/application/Configuration",
 			"tests/com/it2go/test/SecondTemplatedWidget",
 			"com/it2go/dojo-framework/dijit/input/InputWidget",
 			"com/it2go/dojo-framework/dojo/application/SessionController",
 			"tests/com/it2go/test/convert/MyConverter",
 			"dojo/domReady!"],
-		function(parser, registry, domConstruct, SecondTemplatedWidget, InputWidget, SessionController, MyConverter){
+		function(parser, registry, domConstruct, Application, Configuration, SecondTemplatedWidget, InputWidget, SessionController, MyConverter){
+
+        var conf = new Configuration();
+        conf.htmlDataScope = "vidi";
+
+        //Application.init(conf);
 
         var sessionController = SessionController.getInstance();
         var testModel = {

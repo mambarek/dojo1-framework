@@ -4,6 +4,9 @@ import * as registry from "dijit/registry";
 import * as on from "dojo/on";
 import * as lang from "dojo/_base/lang";
 import {ConverterRegistry} from "./input/convert/ConverterRegistry";
+import Application = require("../dojo/application/Application");
+import {HtmlData} from "../dojo/HtmlData";
+
 
 class DataViewWidget extends _DataViewWidget{
 
@@ -12,11 +15,13 @@ class DataViewWidget extends _DataViewWidget{
 
         console.log("DataViewWidget::create called!!! id: " + this.id + " this.valuePath: ", this.valuePath);
 
-        this.initValue();
+        // init attributes data-xxx from HTML
+        this.initAttributes();
     }
 
-    initValue(){
-        this.valuePath = this.domNode.getAttribute("data-value");
+    initAttributes(){
+
+        this.valuePath = this.domNode.getAttribute(Application.getConfiguration().getHtmlData(HtmlData.value));
         if(this.valuePath){
             console.log("DataViewWidget::create called!!! id: " + this.id + " valuePath: " + this.valuePath);
 

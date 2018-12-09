@@ -13,6 +13,9 @@ import Converter = require("./convert/Converter");
 import SessionController = require("../../dojo/application/SessionController");
 import domStyle = require("dojo/dom-style");
 import {ConverterRegistry} from "./convert/ConverterRegistry";
+import Application = require("../../dojo/application/Application");
+import {HtmlData} from "../../dojo/HtmlData";
+
 
 //interface InputWidget extends DataViewWidget{}
 //interface InputWidget extends _InputWidget{}
@@ -29,14 +32,8 @@ class InputWidget extends DataViewWidget{
 
     create(params?: any, srcNodeRef?: HTMLElement): void {
 
-        console.log("++ InputWidget::create call for SUPER call! id: " + this.id + " this.value: ", this.valuePath);
         super.create(params,srcNodeRef);
-        // @ts-ignore
-        //this.inherited(this.create, arguments);
-        console.log("++ InputWidget::create call! id: " + this.id + " this.value: ", this.value);
-
-        // init attributes data-xxx from HTML
-        this.initAttributes();
+        console.log("++ InputWidget::create call! id: " + this.id + " this.valuePath: ", this.valuePath);
 
         switch (this.widgetType.toLocaleLowerCase()) {
             case WidgetTypes.Text.toLocaleLowerCase():
@@ -61,9 +58,14 @@ class InputWidget extends DataViewWidget{
     }
 
     initAttributes(){
-        this.widgetType = this.domNode.getAttribute("data-widgetType");
 
-        let conv = this.domNode.getAttribute("data-converter");
+        super.initAttributes();
+
+        this.widgetType = this.domNode.getAttribute(Application.getConfiguration().getHtmlData(HtmlData.widgetType));
+        if(!this.widgetType)
+            this.widgetType = WidgetTypes.Text;
+
+        let conv = this.domNode.getAttribute(Application.getConfiguration().getHtmlData(HtmlData.converter));
         if(conv){
             console.log("DataViewWidget::create called!!! id: " + this.id + " Converter: " + conv);
             this.converter = ConverterRegistry.getConverter(conv);
