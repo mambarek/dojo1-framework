@@ -191,13 +191,24 @@ class _DataViewWidget {
     isValid():boolean{
         if(!this.valid) return false;
 
-        this.children.forEach(child => {if(!child.isValid()) return false});
+        let valid = true;
+        this.children.forEach(child => {if(!child.isValid()) valid = false});
 
-        return true;
+        return valid;
     }
 
     validate(){
         this.children.forEach(child => child.validate());
+        if(!this.isValid()){
+            //domStyle.set(this.domNode,"border:solid;color:red");
+            this.set("style",{"border":"solid","color":"red"});
+            //this.style = "border:solid;color:red";
+        }
+        else
+            this.set("style",{"border":"solid","color":"green"});
+            //this.style = "border:solid;color:green";
+
+        //this.domNode.s
     }
 }
 

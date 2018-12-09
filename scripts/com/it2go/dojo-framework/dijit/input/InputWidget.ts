@@ -138,6 +138,7 @@ class InputWidget extends DataViewWidget{
     }
 
     validate(){
+        this.valid = true;
         this.validators.forEach(validator => validator.validate(this.targetWidget.value, this));
     }
 }
