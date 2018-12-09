@@ -44,7 +44,7 @@ class _DataViewWidget {
 
     // the attribute from model to represent in this view
     attrName: string;
-    value: string;
+    valuePath: string;
     root:boolean;
 
     // a GUI attribute may not belong to model
@@ -54,6 +54,7 @@ class _DataViewWidget {
 
     visible: boolean = true;
     readOnly: boolean = false;
+    valid: boolean = true;
     children: Array<_DataViewWidget> = new Array<_DataViewWidget>();
     parentViewWiget: _DataViewWidget;
 
@@ -185,6 +186,18 @@ class _DataViewWidget {
 
     private onChange() {
 
+    }
+
+    isValid():boolean{
+        if(!this.valid) return false;
+
+        this.children.forEach(child => {if(!child.isValid()) return false});
+
+        return true;
+    }
+
+    validate(){
+        this.children.forEach(child => child.validate());
     }
 }
 

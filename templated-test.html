@@ -34,18 +34,21 @@
 			"dojo/dom-construct",
 			"tests/com/it2go/test/SecondTemplatedWidget",
 			"com/it2go/dojo-framework/dijit/input/InputWidget",
-			"com/it2go/dojo-framework/dojo/application/SessionController", "dojo/domReady!"],
-		function(parser, registry, domConstruct, SecondTemplatedWidget, InputWidget, SessionController){
+			"com/it2go/dojo-framework/dojo/application/SessionController",
+			"tests/com/it2go/test/convert/MyConverter",
+			"dojo/domReady!"],
+		function(parser, registry, domConstruct, SecondTemplatedWidget, InputWidget, SessionController, MyConverter){
 
         var sessionController = SessionController.getInstance();
         var testModel = {
-            //attrName: "greet",
             entity:{
         		greet: "Hello from entity!!!",
 				birthDate: new Date()
 			}
         };
+
         sessionController.pushObject("greetingModel",testModel);
+        //    sessionController.pushObject("myConverter",new MyConverter());
         var templated = new SecondTemplatedWidget();
 		//emplated.templateString = "<p>Hello world!</p>";
         templated.startup();

@@ -9,6 +9,10 @@ import * as _WidgetsInTemplateMixin from "dijit/_WidgetsInTemplateMixin";
 import TextBox = require("dijit/form/TextBox");
 import SimpleTextarea = require("dijit/form/SimpleTextarea");
 import WidgetTypes = require("./WidgetTypes");
+import Converter = require("./convert/Converter");
+import SessionController = require("../../dojo/application/SessionController");
+import domStyle = require("dojo/dom-style");
+import {ConverterRegistry} from "./convert/ConverterRegistry";
 
 //interface InputWidget extends DataViewWidget{}
 //interface InputWidget extends _InputWidget{}
@@ -17,20 +21,26 @@ import WidgetTypes = require("./WidgetTypes");
 class InputWidget extends DataViewWidget{
     widgetType: string = WidgetTypes.Text;
     targetWidget: _FormValueWidget;
+    //converter:any;
+    validators:any;
+    required:boolean;
+    converter:Converter<any>;
+    converterClass:string;
+
     create(params?: any, srcNodeRef?: HTMLElement): void {
 
-        console.log("++ InputWidget::create call for SUPER call! id: " + this.id + " this.value: ", this.value);
+        console.log("++ InputWidget::create call for SUPER call! id: " + this.id + " this.value: ", this.valuePath);
         super.create(params,srcNodeRef);
         // @ts-ignore
         //this.inherited(this.create, arguments);
         console.log("++ InputWidget::create call! id: " + this.id + " this.value: ", this.value);
 
-        let value = this.getAttributetValue();
+        // init attributes data-xxx from HTML
+        this.initAttributes();
+
         switch (this.widgetType.toLocaleLowerCase()) {
             case WidgetTypes.Text.toLocaleLowerCase():
-
                 this.targetWidget = new TextBox();
-
                 break;
             case WidgetTypes.Date.toLocaleLowerCase():
                 this.targetWidget = new DateTextBox();
@@ -41,10 +51,23 @@ class InputWidget extends DataViewWidget{
 
         }
 
+        let value = this.getAttributetValue();
+
+        if(this.converter) value = this.converter.getAsString(value, this);
+
         this.targetWidget.set('value',value);
         this.targetWidget.placeAt(this.domNode);
         this.getChildren().push(this.targetWidget);
-        //this.buildTree();
+    }
+
+    initAttributes(){
+        this.widgetType = this.domNode.getAttribute("data-widgetType");
+
+        let conv = this.domNode.getAttribute("data-converter");
+        if(conv){
+            console.log("DataViewWidget::create called!!! id: " + this.id + " Converter: " + conv);
+            this.converter = ConverterRegistry.getConverter(conv);
+        }
     }
 
     postCreate(): void {
@@ -52,14 +75,14 @@ class InputWidget extends DataViewWidget{
         super.postCreate();
         // @ts-ignore
         //this.inherited(this.postCreate, arguments);
-        console.log("++ InputWidget::postCreate call! id: " + this.id + " this.value: ", this.value);
+        console.log("++ InputWidget::postCreate call! id: " + this.id + " this.valuePath: ", this.valuePath);
     }
 
     buildRendering(): void {
         super.buildRendering();
         // @ts-ignore
         //this.inherited(this.buildRendering, arguments);
-        console.log("++ InputWidget::buildRendering call! id: " + this.id + " this.value: ", this.value);
+        console.log("++ InputWidget::buildRendering call! id: " + this.id + " this.valuePath: ", this.valuePath);
         //this.targetWidget.startup();
         //this.targetWidget.placeAt(this.domNode);
     }
@@ -70,7 +93,7 @@ class InputWidget extends DataViewWidget{
         super.startup();
         //this.targetWidget.startup();
         //this.targetWidget.placeAt(this.domNode);
-        console.log("++ InputWidget::startup call! id: " + this.id + " this.value: ", this.value);
+        console.log("++ InputWidget::startup call! id: " + this.id + " this.valuePath: ", this.valuePath);
     }
 
     getAttributetValue():any{
@@ -85,6 +108,18 @@ class InputWidget extends DataViewWidget{
         if(!this.dataModelWrapper || !this.dataModelWrapper.entity) return "";
 
         return this.dataModelWrapper.entity[this.attrName];
+    }
+
+    setWidgetStyle(style:string, value:string){
+
+        if(this.isReadOnly()){
+            domStyle.set(this.domNode, style, value);
+            //this.attr('style',  style);
+        }
+
+        if(this.targetWidget)
+            domStyle.set(this.targetWidget.domNode, style, value);
+        //this.targetWidget.attr('style',  style);
     }
 }
 
