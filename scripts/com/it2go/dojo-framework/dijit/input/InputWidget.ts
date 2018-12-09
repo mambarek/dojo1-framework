@@ -15,6 +15,8 @@ import domStyle = require("dojo/dom-style");
 import {ConverterRegistry} from "./convert/ConverterRegistry";
 import Application = require("../../dojo/application/Application");
 import {HtmlData} from "../../dojo/HtmlData";
+import {Validator} from "./validation/Validator";
+import {ValidatorRegistry} from "./validation/ValidatorRegistry";
 
 
 //interface InputWidget extends DataViewWidget{}
@@ -25,10 +27,9 @@ class InputWidget extends DataViewWidget{
     widgetType: string = WidgetTypes.Text;
     targetWidget: _FormValueWidget;
     //converter:any;
-    validators:any;
+    validators: Array<Validator<any>>;
     required:boolean;
     converter:Converter<any>;
-    converterClass:string;
 
     create(params?: any, srcNodeRef?: HTMLElement): void {
 
@@ -48,7 +49,7 @@ class InputWidget extends DataViewWidget{
 
         }
 
-        let value = this.getAttributetValue();
+        let value = this.getAttributeValue();
 
         if(this.converter) value = this.converter.getAsString(value, this);
 
@@ -69,6 +70,18 @@ class InputWidget extends DataViewWidget{
         if(conv){
             console.log("DataViewWidget::create called!!! id: " + this.id + " Converter: " + conv);
             this.converter = ConverterRegistry.getConverter(conv);
+        }
+
+        this.validators = new Array<Validator<any>>();
+        let validators = this.domNode.getAttribute(Application.getConfiguration().getHtmlData(HtmlData.validators));
+        if(validators){
+            let allValidators = validators.split(" ");
+            for (let index = 0; index < allValidators.length; index++) {
+                let validator = ValidatorRegistry.getValidator(allValidators[index]);
+                this.validators.push(validator);
+            }
+
+
         }
     }
 
@@ -98,7 +111,7 @@ class InputWidget extends DataViewWidget{
         console.log("++ InputWidget::startup call! id: " + this.id + " this.valuePath: ", this.valuePath);
     }
 
-    getAttributetValue():any{
+    getAttributeValue():any{
 
         if(!this.dataModelWrapper || !this.dataModelWrapper.entity) return "";
 
@@ -122,6 +135,10 @@ class InputWidget extends DataViewWidget{
         if(this.targetWidget)
             domStyle.set(this.targetWidget.domNode, style, value);
         //this.targetWidget.attr('style',  style);
+    }
+
+    validate(){
+        this.validators.forEach(validator => validator.validate(this.targetWidget.value, this));
     }
 }
 

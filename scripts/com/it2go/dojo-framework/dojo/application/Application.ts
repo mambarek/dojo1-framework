@@ -1,6 +1,5 @@
 import Configuration = require("./Configuration");
 
-
 class Application{
 
     private static config: Configuration;

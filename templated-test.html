@@ -37,7 +37,12 @@
 			"tests/com/it2go/test/SecondTemplatedWidget",
 			"com/it2go/dojo-framework/dijit/input/InputWidget",
 			"com/it2go/dojo-framework/dojo/application/SessionController",
+
+			// hier müssen converter und validator geladen um die Regitries zu füllen
+			// d sollte man ein andres Konzept finden statt hier einzelen alle zu laden
 			"tests/com/it2go/test/convert/MyConverter",
+            "com/it2go/dojo-framework/dijit/input/validation/RequiredValidator",
+
 			"dojo/domReady!"],
 		function(parser, registry, domConstruct, Application, Configuration, SecondTemplatedWidget, InputWidget, SessionController, MyConverter){
 
@@ -63,8 +68,8 @@
         //document.getElementById("cc").innerHTML = templated.containerNode.innerHTML;
         templated.placeAt("cc","replace");
 
+        templated.validate();
 
-        //templated.buildTree();
 
 
     });
